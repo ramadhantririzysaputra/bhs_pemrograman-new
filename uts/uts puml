@@ -1,0 +1,19 @@
+@startuml
+
+{*} --> menu
+menu : 1, bagi
+menu :2, kali 
+menu :3, tambah
+menu :4, kurang
+menu --> pilihan
+pilihan : masukan pilihan anda 
+pilihan --> menu: pilihan anda salah
+pilihan --> bagi: ok
+pilihan --> kali:ok
+pilihan --> tambah:ok
+pilihan --> kurang:ok
+bagi -->{*}: selesai 
+kali --> {*}: selesai
+tambah -->{*}: selesai
+kurang -->{*}: selesai
+@enduml

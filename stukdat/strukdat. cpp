@@ -1,0 +1,117 @@
+#include <iostream>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+class UndoRedo {
+private:
+    stack<string> undoStack;
+    stack<string> redoStack;
+
+public:
+    void addWord(const string& word) {
+        undoStack.push(word);
+        while (!redoStack.empty()) redoStack.pop(); // Clear redo stack on new entry
+    }
+
+    void undo() {
+        if (undoStack.empty()) {
+            cout << "Tidak ada data untuk di-undo" << endl;
+        } else {
+            string word = undoStack.top();
+            redoStack.push(word);
+            undoStack.pop();
+            cout << "Data di hapus: " << word << endl;
+        }
+    }
+
+    void redo() {
+        if (redoStack.empty()) {
+            cout << "Data di hapus: --" << endl;
+        } else {
+            string word = redoStack.top();
+            undoStack.push(word);
+            redoStack.pop();
+            cout << "Data di hapus: " << word << endl;
+        }
+    }
+
+    void displayUndoStack() {
+        if (undoStack.empty()) {
+            cout << "Tidak ada data yang di undo" << endl;
+        } else {
+            stack<string> temp;
+            cout << "Data yang di undo: ";
+            while (!undoStack.empty()) {
+                temp.push(undoStack.top());
+                undoStack.pop();
+            }
+            while (!temp.empty()) {
+                cout << temp.top() << " ";
+                undoStack.push(temp.top());
+                temp.pop();
+            }
+            cout << endl;
+        }
+    }
+
+    void displayRedoStack() {
+        if (redoStack.empty()) {
+            cout << "Tidak ada data yang di redo" << endl;
+        } else {
+            stack<string> temp;
+            cout << "Data yang sebelum nya di hapus: ";
+            while (!redoStack.empty()) {
+                temp.push(redoStack.top());
+                redoStack.pop();
+            }
+            while (!temp.empty()) {
+                cout << temp.top() << " ";
+                redoStack.push(temp.top());
+                temp.pop();
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    UndoRedo ur;
+    int choice;
+    string word;
+
+    while (true) {
+        cout << "1. Add word" << endl;
+        cout << "2. undo" << endl;
+        cout << "3. redo (hapus)" << endl;
+        cout << "4. isEmptyUndo (tampilkan data)" << endl;
+        cout << "5. isEmptyRedo (data yang di hapus)" << endl;
+        cout << "Masukan pilihan: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Masukan kata: ";
+                cin >> word;
+                ur.addWord(word);
+                break;
+            case 2:
+                ur.undo();
+                break;
+            case 3:
+                ur.redo();
+                break;
+            case 4:
+                ur.displayUndoStack();
+                break;
+            case 5:
+                ur.displayRedoStack();
+                break;
+            default:
+                cout << "Pilihan tidak valid" << endl;
+        }
+    }
+
+    return 0;
+}
